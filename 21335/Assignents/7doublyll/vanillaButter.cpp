@@ -1,0 +1,435 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+
+class Node
+{
+private :
+
+	int _rollNo;
+	Node *_next;
+	Node *_prev;
+
+public :
+
+	Node(int rollNo) : _rollNo(rollNo)
+	{
+		_next = this;
+		_prev = this;
+	}
+
+	inline Node* getNext() { return _next; }
+
+	inline Node* getPrev() { return _prev; }
+
+	inline void putNext(Node *n) { _next = n; }
+
+	inline void putPrev(Node *n) { _prev = n; }
+
+	inline int getRollNo() { return _rollNo; }
+};
+
+
+class List
+{
+private :
+
+	Node *head;
+
+public :
+
+       static std::vector<int>(All);
+       static std::vector<int>(onlyV);
+       static std::vector<int>(onlyB);
+       static std::vector<int>(bothVB);
+       static std::vector<int>(uniounVB);
+       static std::vector<int>(none);
+
+	List()
+	{
+		head = NULL;
+                
+        }
+
+	void appendRollNo(int rollNo)
+	{
+		if(!head)
+		{
+			head = new Node(rollNo);
+		}
+
+		else
+		{
+			Node *temp = head;
+
+			while(temp-> getNext() != head)
+			{
+				temp = temp-> getNext();
+			}
+	
+			Node *_new = new Node(rollNo);
+
+			temp-> putNext(_new);
+			head-> putPrev(_new);
+		
+			_new-> putPrev(temp);
+			_new-> putNext(head);
+		}
+	}
+
+
+	void print()
+	{
+		Node *temp = head;
+		bool count = true;
+
+		while(temp != head || count)
+		{
+			count = false;
+
+			std::cout << temp-> getRollNo() << " " ;
+			temp = temp-> getNext();
+		}
+
+		std::cout << '\n';
+	}
+
+	
+	void static onlyVanilla(List &vanilla, List &butter)
+	{
+		bool count1 = true;
+		Node *temp1 = vanilla.head;
+
+		while(temp1 != vanilla.head || count1)
+		{
+			count1  = false;
+			bool flag = false;
+
+			Node *temp2 = butter.head;
+
+			
+			bool count2 = true;
+
+			while(temp2 != butter.head || count2)
+			{
+				count2 = false;
+
+				if(temp1-> getRollNo() == temp2-> getRollNo())
+				{
+					flag = true;
+					break;
+				}
+
+				temp2 = temp2-> getNext();							
+			}
+
+			if(!flag)
+			{
+				onlyV.push_back(temp1-> getRollNo());
+			}
+
+			temp1 = temp1-> getNext();
+		}
+
+        }
+
+
+	void static onlyButter(List &vanilla, List &butter)
+	{
+                bool count1 = true;
+		Node *temp1 = butter.head;
+
+		while(temp1 != butter.head || count1)
+		{
+			count1  = false;
+			bool flag = false;
+
+			Node *temp2 = vanilla.head;
+
+			
+			bool count2 = true;
+
+			while(temp2 != vanilla.head || count2)
+			{
+				count2 = false;
+
+				if(temp1-> getRollNo() == temp2-> getRollNo())
+				{
+					flag = true;
+					break;
+				}
+
+				temp2 = temp2-> getNext();							
+			}
+
+			if(!flag)
+			{
+                                onlyB.push_back(temp1-> getRollNo());
+			}
+
+			temp1 = temp1-> getNext();
+		}
+
+	}
+
+
+	void static both(List &vanilla, List &butter)
+	{
+                bool count1 = true;
+		Node *temp1 = butter.head;
+
+		while(temp1 != butter.head || count1)
+		{
+			count1  = false;
+			bool flag = false;
+
+			Node *temp2 = vanilla.head;
+
+			
+			bool count2 = true;
+
+			while(temp2 != vanilla.head || count2)
+			{
+				count2 = false;
+
+				if(temp1-> getRollNo() == temp2-> getRollNo())
+				{
+					bothVB.push_back(temp1-> getRollNo());
+				}
+
+				temp2 = temp2-> getNext();							
+			}
+
+			temp1 = temp1-> getNext();
+		}
+	}
+
+        void static unioun(List &vanilla, List &butter)
+        {
+                for(int i = 0; i < onlyV.size(); ++i)
+                {
+                        uniounVB.push_back(onlyV[i]);
+                }
+
+                for(int i = 0; i < onlyB.size(); ++i)
+                {
+                        uniounVB.push_back(onlyB[i]);
+                } 
+
+                for(int i = 0; i < bothVB.size(); ++i)
+                {
+                        uniounVB.push_back(bothVB[i]);
+                }          
+        }
+
+        void static None(std::vector<int>&all, std::vector<int>&uni)
+        {
+                bool flag = false;
+
+                for(int i = 0; i < all.size(); ++i)
+                {
+                        for(int j = 0; j < uni.size(); ++j)
+                        {
+                                if(all[i] == uni[j])
+                                {
+                                        flag = true;
+                                        break;
+                                }
+                        }
+
+                        if(!flag)
+                        {
+                                none.push_back(all[i]);
+                        }
+                }   
+        }
+
+        void static printList(std::vector<int>&temp)
+        {
+                sort(temp.begin(), temp.end());
+
+                for(int i = 0; i < temp.size(); ++i)
+                {
+                        std::cout << temp[i] << " ";
+                }
+
+                std::cout << '\n';
+        }
+};
+
+std::vector<int>(List::onlyV);
+std::vector<int>(List::onlyB);
+std::vector<int>(List::bothVB);
+std::vector<int>(List::uniounVB);
+std::vector<int>(List::none);
+std::vector<int>(List::All);
+
+
+int main()
+{
+        int choice;
+        char ip;
+        bool flag = false;
+
+	List vanilla;
+	List butter;
+	
+        while(true)
+        {
+                std::cout << "\nEnter 1 for inputing all students in class\n";
+                std::cout << "Enter 2 to input those who like Vanilla\n";
+                std::cout << "Enter 3 to input those who like only Butterscotch\n";
+                std::cout << "Enter 4 for those who like only Vanilla\n";
+                std::cout << "Enter 5 for those who like only Butterscotch\n";
+                std::cout << "Enter 6 for those who like Both Vanilla and Butterscotch\n";
+                std::cout << "Enter 7 for those who like either Vanilla or Butterscotch\n";   
+                std::cout << "Enter 8 for those who like nothing.\n";  
+
+                std::cout << "\n:- ";
+                std::cin >> choice;
+
+                switch(choice)
+                {
+                       case 1:
+                       {
+                                int n;
+                                int x;
+                                
+                                std::cout << "Enter number of students  ";
+                                std::cin >> n;
+
+                                std::cout << "Enter roll numbers\n";
+
+                                for(int i = 0; i < n; ++i)
+                                {
+                                        std::cout << ":- ";
+                                        std::cin >> x;
+                                        List::All.push_back(x);
+                                }
+
+                                List::printList(List::All);
+
+                       break;
+                       }
+
+                       case 2:
+                       {
+                                int n;
+                                int x;
+
+                                std::cout <<  "Enter number of stuents who like vanilla :- ";
+                                std::cin >> n;
+
+                                std::cout << "Enter roll numbers\n";
+
+                                for(int i = 0; i < n; ++i)
+                                {
+                                        std::cout << ":- ";
+                                        std::cin >> x;
+                                        vanilla.appendRollNo(x);
+                                }
+ 
+                       break;
+                       }
+
+                       case 3:
+                       {
+                                int n;
+                                int x;
+
+                                std::cout <<  "Enter number of stuents who like ButterSotch :- ";
+                                std::cin >> n;
+
+                                std::cout << "Enter roll numbers\n";
+
+                                for(int i = 0; i < n; ++i)
+                                {
+                                        std::cout << ":- ";
+                                        std::cin >> x;
+                                        butter.appendRollNo(x);
+                                }
+
+                       break;
+                       }
+
+                       case 4:
+                       {
+                                List::onlyVanilla(vanilla, butter);
+                                List::printList(List::onlyV);
+                       
+                        break;                        
+                        } 
+
+                       case 5:
+                       {
+                               List::onlyButter(vanilla, butter);
+                               List::printList(List::onlyB);
+
+                       break;
+                       }
+
+                       case 6:
+                       {
+                               List::both(vanilla, butter);
+                               List::printList(List::bothVB);
+
+                       break;
+                       }
+
+                       case 7:
+                       {
+                               List::unioun(vanilla, butter);
+                               List::printList(List::uniounVB);
+
+                       break;
+                       }
+
+                       case 8:  
+                       {        
+                               List::None(List::All, List::uniounVB);
+                               List::printList(List::none);
+
+                       break;
+                       }
+
+                       default :
+                       {
+                                std::cout << "Invalid input enter again\n";
+                                continue;
+                       }
+                }
+
+                std::cout << "\nDo you want to continue\n";
+                
+                while(true)
+                {
+                        std::cout << ":- ";
+                        std::cin >> ip;
+
+                        if(ip != 'n' && ip != 'N' && ip != 'y' && ip != 'Y')
+                        {
+                                std::cout << "Invalid input enter again\n";
+                                continue;
+                        }
+
+                        else if(ip == 'N' || ip == 'n')
+                        {
+                                flag = true;
+                                break;
+                        }
+                        
+                        else
+                        {
+                                break;
+                        }                        
+                }
+	
+        	if(flag)
+                {
+                        std::cout << "\nThank you !\n";
+                        break;
+                }
+        }
+       
+return 0;
+}
